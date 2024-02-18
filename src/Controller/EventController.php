@@ -27,6 +27,8 @@ use App\Entity\User;
 use App\Repository\ParticipantRepository;
 use App\Entity\Participant;
 
+
+
 class EventController extends AbstractController
 {
     
@@ -145,10 +147,12 @@ public function delete($id, EventRepository $repository)
 /*************************************************************************client************************************************************************** */
 
 
-#[Route('/show', name: 'app_show')]
-public function show(Request $request)
+#[Route('/showb/{id}', name: 'app_showb')]
+public function showb($id, UserRepository $userRepository,Request $request)
 {
     $searchQuery = $request->query->get('search', '');
+    //$user = $userRepository->findAll();
+    $user = $userRepository->find($id);
 
     $repository = $this->getDoctrine()->getRepository(Event::class);
     $events = $searchQuery !== '' ?
@@ -157,6 +161,27 @@ public function show(Request $request)
 
     return $this->render('event/show.html.twig', [
         'event' => $events,
+        'user' => $user,
+        'searchQuery' => $searchQuery,
+    ]);
+}
+
+
+#[Route('/show', name: 'app_show')]
+public function show(Request $request)
+{
+    $searchQuery = $request->query->get('search', '');
+    //$user = $userRepository->findAll();
+    //$user = $userRepository->find($id);
+
+    $repository = $this->getDoctrine()->getRepository(Event::class);
+    $events = $searchQuery !== '' ?
+        $repository->findBySearchQuery($searchQuery) :
+        $repository->findAll();
+
+    return $this->render('event/show.html.twig', [
+        'event' => $events,
+        //'user' => $user,
         'searchQuery' => $searchQuery,
     ]);
 }
@@ -214,8 +239,47 @@ public function addParticipant(int $id, int $userId, EventRepository $eventRepos
     return $this->redirectToRoute('app_eventDetails', ['id' => $eventId, 'userId' => $userId]);
 }
 
-/************************************************************************************************************************************************************** */
 
+
+
+#[Route('/Addcomment/{idevent}/{iduser}', name: 'app_Addcomment_event')]
+public function AddCommentToEvent(int $idevent, int $iduser, Request $request, EventRepository $eventRepository, CommentRepository $commentRepository, UserRepository $userRepository)
+{
+    $event = $eventRepository->find($idevent);
+    $user = $userRepository->find($iduser);
+
+    if (!$event || !$user) {
+        throw $this->createNotFoundException('Event or User not found');
+    }
+
+    if ($request->isMethod('POST')) {
+        // Handle form submission
+        $commentaire = $request->request->get('commentaire');
+
+        // Create a new comment
+        $comment = new Comment();
+        $comment->setEvent($event);
+        $comment->setCommentaire($commentaire);
+        $comment->setUser($user);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($comment);
+        $em->flush();
+
+        // Return the updated event details with comments
+        return $this->render('Event/showdetail.html.twig', [
+            'event' => $event,
+            'user' => $user,
+        ]);
+    }
+
+    return $this->render('Event/addtest.html.twig', ['event' => $event]);
+}
+
+
+
+/************************************************************************************************************************************************************** */
+/*
 #[Route('/Addcomment/{id}', name: 'app_Addcomment_event')]
 public function AddCommentToEvent(int $id, Request $request, EventRepository $eventRepository, CommentRepository $commentRepository)
 {
@@ -245,7 +309,7 @@ public function AddCommentToEvent(int $id, Request $request, EventRepository $ev
     return $this->render('Event/addtest.html.twig', ['event' => $event]);
 }
 
-
+*/
 
 
 

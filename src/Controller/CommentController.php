@@ -89,11 +89,18 @@ class CommentController extends AbstractController
 
     }
 
-
-    #[Route('/deletecomment/{ref}', name: 'app_deletecomment')]
-    public function delete($ref, CommentRepository $repository)
+/*
+    #[Route('/deletecomment/{ref}/{id}/{userId}', name: 'app_deletecomment')]
+    public function delete($ref,$id, $userId, CommentRepository $repository, EventRepository $eventRepository, UserRepository $userRepository)
     {
         $comment = $repository->find($ref);
+
+        $event = $eventRepository->find($id);
+        $user = $userRepository->find($userId);
+
+        if (!$event || !$user) {
+            throw $this->createNotFoundException('Event or User not found');
+        }
 
 
         $em = $this->getDoctrine()->getManager();
@@ -101,9 +108,32 @@ class CommentController extends AbstractController
         $em->flush();
 
 
-        return $this->redirectToRoute('app_Affichecomment');
+        //return $this->redirectToRoute('app_Affichecomment',);
+        return $this->render('event/showdetail.html.twig', [
+            'event' => $event,
+            'user' => $user,
+            // 'comments' => $comments,
+        ]);
     }
 
+    */
+    #[Route('/deletecomment/{ref}/{idevent}/{iduser}', name: 'app_deletecomment')]
+    public function deleteComment($ref, $idevent, $iduser, CommentRepository $commentRepository, UserRepository $userRepository, EventRepository $eventRepository)
+    {
+        $comment = $commentRepository->find($ref);
+        $user = $userRepository->find($iduser);
+        $event = $eventRepository->find($idevent);
+    
+        if (!$comment || !$user || !$event) {
+            throw $this->createNotFoundException('Comment, User, or Event not found');
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($comment);
+        $em->flush();
+    
+        return $this->redirectToRoute('app_eventDetails', ['id' => $idevent, 'userId' => $iduser]);
+    }
+    
 
     
 
