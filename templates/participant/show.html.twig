@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>participant Details</title>
+</head>
+<body>
+
+<h1>participant</h1>
+<p>id :{{ participant.id }}</p>
+<p>Event: {{participant.event.name }}</p>
+<h1>Event Details</h1>
+<p>ID: {{ participant.event.id }}</p>
+<p>Name: {{ participant.event.name }}</p>
+<p>Type: {{ participant.event.type }}</p>
+<p>Description: {{ participant.event.description }}</p>
+<p>Date Start: {{ participant.event.datedebut | date('Y-m-d') }}</p>
+<p>Date End: {{ participant.event.datefin | date('Y-m-d') }}</p>
+
+<a href="{{ path('app_afficheparticipant')}}">back to list</a>
+</body>
+</html>

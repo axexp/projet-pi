@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Events{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <!--<h1>List Event</h1>-->
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center text-primary px-3">Event</h6>
+                <h1 class="mb-5">Awesome Event</h1>
+            </div>
+
+            <div class="mb-3">
+                <form class="d-flex" method="get" action="{{ path('app_show') }}">
+                    <input class="form-control me-2" type="text" name="search" value="{{ searchQuery }}" placeholder="Search events" aria-label="Search">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </form>
+            <div class="container-xxl py-5">
+
+            <div class="row g-4 justify-content-center">
+                {% for a in event %}
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="{{ loop.index * 0.2 }}s">
+                        <div class="package-item">
+                            
+                            <div>
+                                <img class="img-fluid" src="{{ asset('uploads/' ~ a.image) | raw }}" alt="Event Image">
+                            </div>
+
+                            <div class="d-flex border-bottom">
+                               
+                                <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>{{ a.datedebut | date('M-d-Y') }}</small>
+                                
+                            </div>
+                            <div class="text-center p-4">
+                                
+                                <!--
+                                <div class="mb-3">
+                                    {% for _ in 1..5 %}
+                                        <small class="fa fa-star text-primary"></small>
+                                    {% endfor %}
+                                </div>
+                                 
+                                <p>{{ a.type }}</p>
+                                <p>{{ a.name }}</p>
+                                -->
+                                <h6 class="card-title">{{ a.type }}</h6>
+                                <p>{{ a.name }}</p>
+                                <!--
+                                <p>{{ a.description }}</p>
+                                <div class="d-flex justify-content-center mb-2">
+                                    <a href="" class="btn btn-sm btn-primary px-3" style="border-radius: 30px;">Participer</a>
+                                </div>
+                                -->
+                                <div class="d-flex justify-content-center mb-2">
+                                    
+                                    <a href="{{ path('app_eventDetails',  {'id': a.id,'userId': user.id}) }}" class="btn btn-sm btn-primary px-3" style="border-radius: 30px;">detail</a>
+                                </div>                                 
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

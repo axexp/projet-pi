@@ -1,0 +1,27 @@
+
+<body>
+    <h1>List user</h1>
+    
+    <table border="1">
+        <tr>
+            <th>user id</th>
+            <th>name</th>
+            <th>mod</th>
+        </tr>
+    
+    
+        <tr>  {% for c in user %} </tr>
+        <td>{{ c.id }}</td>
+        <td>{{ c.name }}</td>
+        
+        <td>
+            <a href="{{ path('app_deleteuser', {'id': c.id}) }}">delete</a>
+            <a href="{{ path('app_detailuser', {'id': c.id}) }}">detail</a>
+        </td>
+        {% endfor %}
+       
+    
+    </table>
+    <a href="{{ path('app_Adduser')}}">Add</a>
+    
+    

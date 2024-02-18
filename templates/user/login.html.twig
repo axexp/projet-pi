@@ -1,0 +1,10 @@
+{# templates/user/login.html.twig #}
+
+
+
+<form method="post" action="{{ path('app_connect') }}">
+    <label for="name">name:</label>
+    <input type="text" id="name" name="name"  required />
+    
+    <button type="submit">Login</button>
+</form>

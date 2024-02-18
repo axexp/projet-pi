@@ -1,0 +1,30 @@
+
+<body>
+    <h1>List participant</h1>
+    {#<a href="{{ path('app_AddBook')}}">Add</a>#}
+    
+    <table border="1">
+        <tr>
+            <th>participant</th>
+            <th>Event id</th>
+            <th>user id</th>
+            <th>mod</th>
+        </tr>
+    
+    
+        <tr>  {% for c in participants %} </tr>
+        <td>{{ c.id }}</td>
+        <td>{{ c.event.name }}</td>
+        <td>{{ c.user.name }}</td>
+        
+        <td>
+            <a href="{{ path('app_deleteparticipant', {'id': c.id}) }}">delete</a>
+            <a href="{{ path('app_detailparticipant', {'id': c.id}) }}">detail</a>
+        </td>
+        {% endfor %}
+       
+    
+    </table>
+    <a href="{{ path('app_addparticipant')}}">Add</a>
+    
+    

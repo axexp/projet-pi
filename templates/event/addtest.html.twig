@@ -1,0 +1,12 @@
+<h1>Add Comment</h1>
+
+<form method="post" action="{{ path('app_Addcomment_event', {'id': event.id}) }}">
+    <div class="mb-3">
+        <label for="commentaire">Your Comment:</label>
+        <textarea id="commentaire" name="commentaire" class="form-control" placeholder="Write your comment here..." required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Comment</button>
+
+    <a href="{{ path('app_Affiche') }}" class="btn btn-secondary">Back to list</a>
+</form>

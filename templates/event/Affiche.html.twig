@@ -1,0 +1,60 @@
+{% extends 'baseA.html.twig' %}
+
+{% block title %}Events{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1>Events</h1>
+            <div class="d-flex">
+                <form class="d-flex me-2" method="get" action="{{ path('app_Affiche') }}">
+                    <input class="form-control" type="text" name="search" value="{{ searchQuery }}" placeholder="Search events" aria-label="Search">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </form>
+                    <a href="{{ path('app_Add') }}" class="btn btn-success">Add Event</a>
+            </div>
+        </div>
+        
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>TYPE</th>
+                    <th>DATE DEBUT</th>
+                    <th>DATE FIN</th>
+                    <th>DESCRIPTION</th>
+                    <th>Image</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in event %}
+                    <tr>
+                        <td>{{ a.id }}</td>
+                        <td>{{ a.name }}</td>
+                        <td>{{ a.type }}</td>
+                        <td>{{ a.datedebut | date('M-d-Y') }}</td>
+                        <td>{{ a.datefin | date('M-d-Y') }}</td>
+                        <td>{{ a.description }}</td>
+                        <td>
+                             <div>
+                                <img src="{{ asset('uploads/' ~ a.image) }}" alt="Event Image">
+                             </div>
+                        </td>
+                        <td>
+                            <a href="{{ path('app_editEvent', {'id': a.id}) }}" class="btn btn-primary">Edit</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('app_deleteEvent', {'id': a.id}) }}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
