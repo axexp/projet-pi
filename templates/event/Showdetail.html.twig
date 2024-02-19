@@ -2,6 +2,33 @@
 
 {% block title %}Event Details{% endblock %}
 
+{% block navigate %}
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+
+                    <a href="{{ path('app_home',  {'id':user.id}) }}" class="nav-item nav-link ">Home</a>
+                    <a href="about.html" class="nav-item nav-link">About</a>
+                    <a href="service.html" class="nav-item nav-link">Services</a>
+                    <a href="{{ path('app_showb',  {'id':user.id}) }}" class="nav-item nav-link active">Events</a>
+                    
+
+
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                        <div class="dropdown-menu m-0">
+                            <a href="destination.html" class="dropdown-item">Destination</a>
+                            <a href="booking.html" class="dropdown-item">Booking</a>
+                            <a href="team.html" class="dropdown-item">Travel Guides</a>
+                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
+                            <a href="404.html" class="dropdown-item">404 Page</a>
+                        </div>
+                    </div>
+                    <a href="contact.html" class="nav-item nav-link">Contact</a>
+                </div>
+                <a href="" class="btn btn-primary rounded-pill py-2 px-4">Register</a>
+            </div>
+{% endblock %}
+
 {% block body %}
 
 <div class="container mt-5">
@@ -9,7 +36,9 @@
         <div class="col-md-8">
 
             <div class="card">
-                <img class="card-img-top" src="data:image/jpeg;base64,{{ event.image | raw }}" alt="Event Image">
+                {% if event.image %}
+                    <img src="{{ asset('uploads/images/' ~ event.image) }}" alt="{{ event.name }}" class="img-fluid">
+                {% endif %}
                 <div class="card-body">
                     <div class="d-flex justify-content-between border-bottom pb-3">
                         <div>
@@ -57,6 +86,7 @@
 
                     <h3 class="mt-4">Comments:</h3>
 
+
                     {% if event.Comments is not empty %}
                     <ul class="list-group">
                         {% for comment in event.Comments %}
@@ -74,7 +104,8 @@
                     {% else %}
                     <p class="mt-3">No comments yet.</p>
                     {% endif %}
-
+                    
+                    
                 </div>
             </div>
 

@@ -39,10 +39,16 @@
                     {{ form_errors(f.datefin) }}
                 </div>
 
-
                 <div class="mb-3">
-                    <img class="img-fluid" src="{{ asset('uploads/' ~ f.image.vars.value) }}" alt="Event Image">
+                    {{ form_label(f.nbPlaces, "Nombre Places") }}
+                    {{ form_widget(f.nbPlaces, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(f.nbPlaces) }}
                 </div>
+
+                {% if event.image %}
+                    <img src="{{ asset('uploads/images/' ~ event.image) }}" alt="{{ event.name }}" class="img-fluid">
+                {% endif %}
+                
 
 
 

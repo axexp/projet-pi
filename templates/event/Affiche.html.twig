@@ -26,10 +26,8 @@
                     <th>TYPE</th>
                     <th>DATE DEBUT</th>
                     <th>DATE FIN</th>
-                    <th>DESCRIPTION</th>
-                    <th>Image</th>
+                    <th>Nombre Places</th>
                     <th>Edit</th>
-                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,18 +38,12 @@
                         <td>{{ a.type }}</td>
                         <td>{{ a.datedebut | date('M-d-Y') }}</td>
                         <td>{{ a.datefin | date('M-d-Y') }}</td>
-                        <td>{{ a.description }}</td>
+                        <td>{{ a.nbPlaces }}</td>
+                        
                         <td>
-                             <div>
-                                <img src="{{ asset('uploads/' ~ a.image) }}" alt="Event Image">
-                             </div>
+                            <a href="{{ path('app_ShoweventA', {'id': a.id}) }}" class="btn btn-primary">Detail</a>
                         </td>
-                        <td>
-                            <a href="{{ path('app_editEvent', {'id': a.id}) }}" class="btn btn-primary">Edit</a>
-                        </td>
-                        <td>
-                            <a href="{{ path('app_deleteEvent', {'id': a.id}) }}" class="btn btn-danger">Delete</a>
-                        </td>
+                        
                     </tr>
                 {% endfor %}
             </tbody>

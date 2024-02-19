@@ -1,0 +1,61 @@
+{% extends 'baseA.html.twig' %}
+
+{% block title %}Events{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="row mb-3">
+            <div class="col-12">
+                <a href="{{ path('app_editEvent', {'id': event.id}) }}" class="btn btn-primary">Edit</a>
+                <a href="{{ path('app_deleteEvent', {'id': event.id}) }}" class="btn btn-danger">Delete</a>
+                <a href="{{ path('app_Affiche') }}" class="btn btn-secondary">Back to list</a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                
+                {% if event.image %}
+                    <img src="{{ asset('uploads/images/' ~ event.image) }}" alt="{{ event.name }}" class="img-fluid">
+                {% endif %}
+
+            </div>
+            <div class="col-md-8">
+                <h1><strong>Name:</strong> {{ event.name }}</h1>
+                <p class="lead"><strong>Type:</strong> {{ event.type }}</p>
+                <p><strong>Description:</strong> {{ event.description }}</p>
+                <p><strong>Date Debut:</strong> {{ event.datedebut|date('Y-m-d H:i') }}</p>
+                <p><strong>Date Fin:</strong> {{ event.datefin|date('Y-m-d H:i') }}</p>
+                <p><strong>Nombre Places:</strong> {{ event.nbPlaces }}</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <h2>Participants</h2>
+                <ul class="list-group">
+                    {% for participant in event.participants %}
+                        <li class="list-group-item">{{ participant.user.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-md-6">
+                <h2>Comments</h2>
+                {% if event.comments|length > 0 %}
+                    <ul class="list-group">
+                        {% for comment in event.comments %}
+                            <li class="list-group-item">
+                                <strong>{{ comment.user.name }}:</strong> {{ comment.commentaire }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No comments yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

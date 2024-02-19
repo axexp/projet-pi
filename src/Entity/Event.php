@@ -38,11 +38,18 @@ class Event
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[assert\NotBlank(message:"Date debut is required")]
+    #[Assert\GreaterThan("yesterday", message: "The start date must be today or in the future")]
     private ?\DateTimeInterface $datedebut = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[assert\NotBlank(message:"Date fin is required")]
+    #[Assert\GreaterThanOrEqual(propertyPath: "datedebut", message: "The end date must be on or after the start date")]
     private ?\DateTimeInterface $datefin = null;
+
+    #[ORM\Column]
+    #[Assert\Positive(message: "The number of places must be a positive integer")]
+    #[Assert\NotNull(message: "The number of places cannot be null")]
+    private ?int $nbPlaces = null;
 
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: Comment::class)]
     private Collection $comments;
@@ -51,8 +58,22 @@ class Event
     private Collection $participants;
 
 
-    #[ORM\Column(type:"string", nullable:true)]
+    #[ORM\Column(type:"string", nullable:false)]
+    #[assert\NotBlank(message:"image is required")]
     private ?string $image;
+
+
+    public function getNbPlaces(): ?int
+    {
+        return $this->nbPlaces;
+    }
+
+    public function setNbPlaces(int $nbPlaces): static
+    {
+        $this->nbPlaces = $nbPlaces;
+
+        return $this;
+    }
 
 
     /**

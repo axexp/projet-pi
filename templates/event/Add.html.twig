@@ -38,8 +38,17 @@
                     {{ form_widget(f.datefin, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(f.datefin) }}
                 </div>
+                
                 <div class="mb-3">
-                    {{ form_label(f.image, "Event Image") }}
+                    {{ form_label(f.nbPlaces, "Nombre Places") }}
+                    {{ form_widget(f.nbPlaces, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(f.nbPlaces) }}
+                </div>
+
+                
+
+                <div class="mb-3">
+                    {{ form_label(f.image, "New Image") }}
                     {{ form_widget(f.image, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(f.image) }}
                 </div>

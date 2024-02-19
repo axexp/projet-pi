@@ -29,6 +29,40 @@ class ParticipantController extends AbstractController
         ]);
     }
 
+
+
+    #[Route('/deleteparticipant/{ref}/{idevent}/{iduser}', name: 'app_deleteparticipant')]
+    public function deleteParticipant($ref, $idevent, $iduser, ParticipantRepository $repository, UserRepository $userRepository, EventRepository $eventRepository): Response
+    {
+        // Find the participant based on the provided parameters
+        $participant = $repository->findOneBy(['event' => $idevent, 'user' => $iduser]);
+
+        if (!$participant) {
+            // Handle the case when the participant is not found, e.g., show an error message or redirect
+            // You may want to adjust this part based on your application's requirements
+            return $this->redirectToRoute('app_eventDetails', ['id' => $idevent, 'userId' => $iduser]);
+        }
+
+        // Remove the participant from the database
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($participant);
+        $entityManager->flush();
+
+        // Redirect to the app_eventDetails route after successful deletion
+        return $this->redirectToRoute('app_eventDetails', ['id' => $idevent, 'userId' => $iduser]);
+    }
+
+
+    
+
+
+
+
+
+
+    /************************************************************************************************************************************************* */
+    /**************************************************************CRUD-PARTICIPANT*********************************************************************************** */
+
     #[Route('/afficheparticipant', name: 'app_afficheparticipant')]
     public function affiche(ParticipantRepository $repository): Response
     {
@@ -119,26 +153,6 @@ public function deleteParticipant($ref, $idevent, $iduser, ParticipantRepository
 }
 */
 
-#[Route('/deleteparticipant/{ref}/{idevent}/{iduser}', name: 'app_deleteparticipant')]
-    public function deleteParticipant($ref, $idevent, $iduser, ParticipantRepository $repository, UserRepository $userRepository, EventRepository $eventRepository): Response
-    {
-        // Find the participant based on the provided parameters
-        $participant = $repository->findOneBy(['event' => $idevent, 'user' => $iduser]);
-
-        if (!$participant) {
-            // Handle the case when the participant is not found, e.g., show an error message or redirect
-            // You may want to adjust this part based on your application's requirements
-            return $this->redirectToRoute('app_eventDetails', ['id' => $idevent, 'userId' => $iduser]);
-        }
-
-        // Remove the participant from the database
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($participant);
-        $entityManager->flush();
-
-        // Redirect to the app_eventDetails route after successful deletion
-        return $this->redirectToRoute('app_eventDetails', ['id' => $idevent, 'userId' => $iduser]);
-    }
 
     
 }

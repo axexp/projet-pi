@@ -58,6 +58,18 @@ public function affiche(Request $request)
     ]);
 }
 
+#[Route('/ShoweventA/{id}', name: 'app_ShoweventA')]
+    public function showeventA($id, EventRepository $repository)
+    {
+        $event = $repository->find($id);
+        if (!$event) {
+            return $this->redirectToRoute('app_Affiche');
+        }
+
+        return $this->render('event/DetailA.html.twig', ['event' => $event]);
+    }
+
+
 #[Route('/add', name: 'app_Add')]
     public function add(Request $request): Response
     {
@@ -117,15 +129,36 @@ public function edit(EventRepository $repository, $id, Request $request): Respon
     }
 
     return $this->render('event/edit.html.twig', [
+        'event' => $event,
         'f' => $form->createView(),
     ]);
 }
-
+/*
 #[Route('/delete/{id}', name: 'app_deleteEvent')]
-public function delete($id, EventRepository $repository)
+public function delete($id, EventRepository $repository, EntityManagerInterface $entityManager)
 {
     $event = $repository->find($id);
+
+    $comments = $event->getComments();
+
+        foreach ($comments as $comment) {
+              $entityManager->remove($comment);
+        }
+
+        $entityManager->remove($event);
+        $entityManager->flush();
  
+
+    $participants = $event->getParticipants();
+
+        foreach ($participants as $participant) {
+            $entityManager->remove($participant);
+        }
+        
+        $entityManager->remove($event);
+        $entityManager->flush();
+
+
     if (!$event) {
         throw $this->createNotFoundException('Event non trouvé');
     }
@@ -137,8 +170,32 @@ public function delete($id, EventRepository $repository)
         
     return $this->redirectToRoute('app_Affiche');
 }
+*/
 
+#[Route('/delete/{id}', name: 'app_deleteEvent')]
+public function delete($id, EventRepository $repository, EntityManagerInterface $entityManager)
+{
+    $event = $repository->find($id);
 
+    if (!$event) {
+        throw $this->createNotFoundException('Event not found');
+    }
+
+    $comments = $event->getComments();
+    foreach ($comments as $comment) {
+        $entityManager->remove($comment);
+    }
+
+    $participants = $event->getParticipants();
+    foreach ($participants as $participant) {
+        $entityManager->remove($participant);
+    }
+
+    $entityManager->remove($event);
+    $entityManager->flush();
+
+    return $this->redirectToRoute('app_Affiche');
+}
 
 
 
@@ -166,7 +223,7 @@ public function showb($id, UserRepository $userRepository,Request $request)
     ]);
 }
 
-
+/*
 #[Route('/show', name: 'app_show')]
 public function show(Request $request)
 {
@@ -185,7 +242,7 @@ public function show(Request $request)
         'searchQuery' => $searchQuery,
     ]);
 }
-
+*/
 
 #[Route('/eventDetails/{id}/{userId}', name: 'app_eventDetails')]
 public function eventDetails($id, $userId, EventRepository $eventRepository, UserRepository $userRepository)

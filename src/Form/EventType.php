@@ -36,7 +36,7 @@ class EventType extends AbstractType
                 'required' => false,
                 'data_class' => null,
             ]);*/
-            // ... other fields
+            ->add('nbPlaces')
             ->add('image', FileType::class, [
                 'label' => 'Event Image',
                 'required' => false,
