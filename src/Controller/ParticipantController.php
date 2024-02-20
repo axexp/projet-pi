@@ -52,6 +52,29 @@ class ParticipantController extends AbstractController
         return $this->redirectToRoute('app_eventDetails', ['id' => $idevent, 'userId' => $iduser]);
     }
 
+    #[Route('/deleteparticipantA/{ref}/{idevent}', name: 'app_deleteparticipantA')]
+public function deleteParticipantA($ref, $idevent, ParticipantRepository $participantRepository, EventRepository $eventRepository): Response
+{
+    $participant = $participantRepository->find($ref);
+    $event = $eventRepository->find($idevent);
+
+    if (!$participant || !$event) {
+        throw $this->createNotFoundException('Participant or Event not found');
+    }
+
+    // Remove the participant from the database
+    $entityManager = $this->getDoctrine()->getManager();
+    $entityManager->remove($participant);
+    $entityManager->flush();
+
+    // Optionally add a flash message
+    $this->addFlash('success', 'Participant has been deleted.');
+
+    // Redirect to the app_ShoweventA route after successful deletion
+    return $this->redirectToRoute('app_ShoweventA', ['id' => $idevent]);
+}
+
+
 
     
 

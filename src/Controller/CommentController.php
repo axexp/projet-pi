@@ -50,7 +50,57 @@ class CommentController extends AbstractController
     }
     
 
+    #[Route('/deletecommentA/{ref}/{idevent}', name: 'app_deletecommentA')]
+    public function deleteCommentA($ref, $idevent, CommentRepository $commentRepository, EventRepository $eventRepository)
+    {
+        
+        $comment = $commentRepository->find($ref);
+        $event = $eventRepository->find($idevent);
+         
+        if (!$comment || !$event) {
+            throw $this->createNotFoundException('Comment or Event not found');
+        }
 
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($comment);
+        $em->flush();
+    
+        //return $this->render('event/DetailA.html.twig', ['event' => $event]);
+        return $this->redirectToRoute('app_ShoweventA', ['id' => $idevent]);
+    }
+/*
+    #[Route('/deletecommentA/{id}/{eventid}', name: 'app_deletecommentA')]
+public function deleteCommentA(Request $request, int $id, int $eventid, CommentRepository $commentRepository): Response
+{
+    $entityManager = $this->getDoctrine()->getManager();
+
+    // Retrieve the event and comment entities
+    $event = $entityManager->getRepository(Event::class)->find($eventid);
+    $comment = $entityManager->getRepository(Comment::class)->find($id);
+
+    // Check if both event and comment exist
+    if (!$event || !$comment) {
+        // Handle not found scenario or redirect as needed
+        return $this->redirectToRoute('your_error_route');
+    }
+
+    // Check if the comment belongs to the event
+    if ($comment->getEvent() !== $event) {
+        // Handle invalid association or redirect as needed
+        return $this->redirectToRoute('your_error_route');
+    }
+
+    // Remove the comment from the event and delete it
+    $em = $this->getDoctrine()->getManager();
+    $em->remove($comment);
+    $em->flush();
+
+    // Redirect to the event details page or any other page as needed
+    //return $this->redirectToRoute('event_detail', ['id' => $event->getId()]);
+    return $this->render('event/DetailA.html.twig', ['event' => $event]);
+}
+
+*/
 
 
 

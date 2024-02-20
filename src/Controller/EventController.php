@@ -105,6 +105,7 @@ public function affiche(Request $request, ManagerRegistry $doctrine): Response
     }
 
 
+
 #[Route('/add', name: 'app_Add')]
     public function add(Request $request): Response
     {

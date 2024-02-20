@@ -42,7 +42,7 @@
                              {{ participant.user.name }}
                         </div>
                         <div>
-                            <a href=""
+                            <a href="{{ path('app_deleteparticipantA', {'ref': participant.id, 'idevent': event.id}) }}"
                             class="btn btn-danger btn-sm">Delete</a>
                         </div>
                     </li>
@@ -60,8 +60,9 @@
                                     <strong>{{ comment.user.name }}:</strong> {{ comment.commentaire }}
                                 </div>
                                 <div>
-                                    <a href=""
-                                    class="btn btn-danger btn-sm">Delete</a>
+                                    <a href="{{ path('app_deletecommentA', {'ref': comment.id, 'idevent': event.id}) }}"
+                                        class="btn btn-danger btn-sm">Delete</a>
+
                                 </div>
                             </li>
                         {% endfor %}
