@@ -45,14 +45,13 @@
                     {{ form_errors(f.nbPlaces) }}
                 </div>
 
-                {% if event.image %}
-                    <img src="{{ asset('uploads/images/' ~ event.image) }}" alt="{{ event.name }}" class="img-fluid">
-                {% endif %}
+                <div class="mb-3">
+                    <p>Event Image :</p>
+                    {% if event.image %}
+                        <img src="{{ asset('uploads/images/' ~ event.image) }}" alt="{{ event.name }}" class="img-fluid">
+                    {% endif %}
+                </div>
                 
-
-
-
-
                 <div class="mb-3">
                     {{ form_label(f.image, "New Image") }}
                     {{ form_widget(f.image, {'attr': {'class': 'form-control'}}) }}

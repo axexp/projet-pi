@@ -27,6 +27,8 @@ use App\Entity\User;
 use App\Repository\ParticipantRepository;
 use App\Entity\Participant;
 
+use Doctrine\Persistence\ManagerRegistry;
+
 
 
 class EventController extends AbstractController
@@ -41,7 +43,7 @@ class EventController extends AbstractController
     }
 
 /***************************************************************************responsable*************************************************************************** */
-
+/*       original
 #[Route('/affiche', name: 'app_Affiche')]
 public function affiche(Request $request)
 {
@@ -57,6 +59,39 @@ public function affiche(Request $request)
         'searchQuery' => $searchQuery,
     ]);
 }
+*/
+
+#[Route('/affiche', name: 'app_Affiche')]
+public function affiche(Request $request, ManagerRegistry $doctrine): Response
+{
+    $em = $doctrine->getManager();
+
+    $currentPage = $request->query->getInt('page', 1);
+    $itemsPerPage = 2;
+    $offset = ($currentPage - 1) * $itemsPerPage;
+
+    $searchQuery = $request->query->get('search', '');
+
+    $eventRepository = $em->getRepository(Event::class);
+
+    if ($searchQuery !== '') {
+        $eventItems = $eventRepository->findBySearchQuery($searchQuery, $itemsPerPage, $offset);
+        $totalItems = count($eventItems); // Count the search results
+    } else {
+        $eventItems = $eventRepository->findBy([], null, $itemsPerPage, $offset);
+        $totalItems = $eventRepository->count([]); // Count all items
+    }
+
+    $totalPages = ceil($totalItems / $itemsPerPage);
+
+    return $this->render('event/affiche.html.twig', [
+        'event' => $eventItems,
+        'searchQuery' => $searchQuery,
+        'currentPage' => $currentPage,
+        'totalPages' => $totalPages,
+    ]);
+}
+
 
 #[Route('/ShoweventA/{id}', name: 'app_ShoweventA')]
     public function showeventA($id, EventRepository $repository)

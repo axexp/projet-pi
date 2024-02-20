@@ -58,8 +58,8 @@ class Event
     private Collection $participants;
 
 
-    #[ORM\Column(type:"string", nullable:false)]
-    #[assert\NotBlank(message:"image is required")]
+    #[ORM\Column(type:"string", nullable:true)]
+    //#[assert\NotBlank(message:"image is required")]
     private ?string $image;
 
 
