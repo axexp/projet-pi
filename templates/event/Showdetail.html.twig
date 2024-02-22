@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_front.html.twig' %}
 
 {% block title %}Event Details{% endblock %}
 
@@ -52,27 +52,47 @@
                         <h3 class="card-title">{{ event.type }}</h3>
                         <h5 class="card-title">{{ event.name }}</h5>
                     </div>
+                    <span class="fw-bold">Address:</span> {{ event.address }}
                     <p class="card-text">{{ event.description }}</p>
+
+
+
 
                     <div class="d-flex justify-content-center mt-3">
                         {% set isUserParticipant = false %}
+                        {% set allPlacesReserved = event.nbPlaces == event.nbPlacesR %}
+
                         {% for participant in event.participants %}
                             {% if participant.user == user %}
                                 {% set isUserParticipant = true %}
-                                <a href="{{ path('app_deleteparticipant', {'ref': user.id, 'idevent': event.id, 'iduser': user.id}) }}" class="btn btn-secondary btn-sm" 
-                                style="border-radius: 30px;">Cancel</a>
-                                {# You can add the logic to handle cancellation here #}
+                                    <div class="d-flex align-items-center">
+                                        {% if allPlacesReserved %}
+                                            <label class="form-label me-2"><strong>All Places Reserved</strong></label>
+                                        {% endif %}
+                                        <a href="{{ path('app_deleteparticipant', {'ref': user.id, 'idevent': event.id, 'iduser': user.id}) }}"
+                                        class="btn btn-danger btn-sm" style="border-radius: 30px;">Cancel</a>
+                                    </div>
                             {% endif %}
                         {% endfor %}
 
                         {% if not isUserParticipant %}
-                            <a href="{{ path('app_addParticipant', {'id': event.id,'userId': user.id}) }}" class="btn btn-primary btn-sm me-2"
-                                style="border-radius: 30px;">Participate</a>
-                            {# You can add the logic to handle participation here #}
+                            {% if not allPlacesReserved %}
+                                <a href="{{ path('app_addParticipant', {'id': event.id, 'userId': user.id}) }}" class="btn btn-primary btn-sm me-2"
+                                    style="border-radius: 30px;">Participate</a>
+                            {% else %}
+                                <label class="form-label me-2"><strong>All Places Reserved</strong></label>
+                            {% endif %}
                         {% endif %}
 
-                        <a href="{{ path('app_showb',  {'id':user.id}) }}" class="btn btn-secondary btn-sm" style="border-radius: 30px;">Back to list</a>
+                        <a href="{{ path('app_showb', {'id': user.id}) }}" class="btn btn-secondary btn-sm"
+                            style="border-radius: 30px;">Back to list</a>
                     </div>
+
+                    
+                    
+                    
+
+
 
                     <form method="post"
                         action="{{ path('app_Addcomment_event', {'idevent': event.id, 'iduser': user.id}) }}" class="mt-4">

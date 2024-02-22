@@ -1,4 +1,4 @@
-{% extends 'baseA.html.twig' %}
+{% extends 'base_back.html.twig' %}
 
 {% block title %}Edit Events{% endblock %}
 
@@ -25,6 +25,12 @@
                     {{ form_label(f.description, "Description") }}
                     {{ form_widget(f.description, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(f.description) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(f.address, "address") }}
+                    {{ form_widget(f.address, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(f.address) }}
                 </div>
 
                 <div class="mb-3">

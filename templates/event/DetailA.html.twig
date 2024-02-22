@@ -1,4 +1,4 @@
-{% extends 'baseA.html.twig' %}
+{% extends 'base_back.html.twig' %}
 
 {% block title %}Events{% endblock %}
 
@@ -24,6 +24,7 @@
                 <h1><strong>Name:</strong> {{ event.name }}</h1>
                 <p class="lead"><strong>Type:</strong> {{ event.type }}</p>
                 <p><strong>Description:</strong> {{ event.description }}</p>
+                <p><strong>Address:</strong> {{ event.address }}</p>
                 <p><strong>Date Debut:</strong> {{ event.datedebut|date('Y-m-d H:i') }}</p>
                 <p><strong>Date Fin:</strong> {{ event.datefin|date('Y-m-d H:i') }}</p>
                 <p><strong>Nombre Places:</strong> {{ event.nbPlaces }}</p>
@@ -35,6 +36,7 @@
         <div class="row mt-4">
             <div class="col-md-6">
                 <h2>Participants</h2>
+                <p><strong>Places Reserved:</strong> {{ event.nbPlacesR }} / {{ event.nbPlaces }}</p>
                 <ul class="list-group">
                     {% for participant in event.participants %}
                     <li class="list-group-item d-flex justify-content-between align-items-center">

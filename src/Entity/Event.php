@@ -13,8 +13,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 
 
-
-
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ApiResource]
 class Event
@@ -36,6 +34,10 @@ class Event
     #[assert\NotBlank(message:"description is required")]
     private ?string $description = null;
 
+    #[ORM\Column(length:255)]
+    #[assert\NotBlank(message:"address is required")]
+    private ?string $address = null;
+
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[assert\NotBlank(message:"Date debut is required")]
     #[Assert\GreaterThan("yesterday", message: "The start date must be today or in the future")]
@@ -51,6 +53,26 @@ class Event
     #[Assert\NotNull(message: "The number of places cannot be null")]
     private ?int $nbPlaces = null;
 
+    #[ORM\Column]
+    private ?int $nbPlacesR = null;
+
+
+    public function getNbPlacesR(): ?int
+    {
+        return $this->nbPlacesR;
+    }
+
+    public function setNbPlacesR(int $nbPlacesR): static
+    {
+        $this->nbPlacesR = $nbPlacesR;
+
+        return $this;
+    }
+
+
+
+
+    /*********************************************************************** */
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: Comment::class)]
     private Collection $comments;
 
@@ -61,6 +83,21 @@ class Event
     #[ORM\Column(type:"string", nullable:true)]
     //#[assert\NotBlank(message:"image is required")]
     private ?string $image;
+
+
+
+public function getAddress(): ?string
+{
+    return $this->address;
+}
+
+public function setAddress(string $address): self
+{
+    $this->address = $address;
+
+    return $this;
+}
+
 
 
     public function getNbPlaces(): ?int
@@ -74,6 +111,8 @@ class Event
 
         return $this;
     }
+
+    
 
 
     /**

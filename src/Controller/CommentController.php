@@ -10,9 +10,7 @@ use App\Repository\CommentRepository;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
-
 use App\Repository\EventRepository;
-
 
 use App\Entity\Comment;
 use App\Form\CommentType;
@@ -31,24 +29,9 @@ class CommentController extends AbstractController
         ]);
     }
 
+/******************************************************************************************************************************************* */
+/*********************************************************respensable********************************************************************************** */
 
-    #[Route('/deletecomment/{ref}/{idevent}/{iduser}', name: 'app_deletecomment')]
-    public function deleteComment($ref, $idevent, $iduser, CommentRepository $commentRepository, UserRepository $userRepository, EventRepository $eventRepository)
-    {
-        $comment = $commentRepository->find($ref);
-        $user = $userRepository->find($iduser);
-        $event = $eventRepository->find($idevent);
-    
-        if (!$comment || !$user || !$event) {
-            throw $this->createNotFoundException('Comment, User, or Event not found');
-        }
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($comment);
-        $em->flush();
-    
-        return $this->redirectToRoute('app_eventDetails', ['id' => $idevent, 'userId' => $iduser]);
-    }
-    
 
     #[Route('/deletecommentA/{ref}/{idevent}', name: 'app_deletecommentA')]
     public function deleteCommentA($ref, $idevent, CommentRepository $commentRepository, EventRepository $eventRepository)
@@ -68,39 +51,65 @@ class CommentController extends AbstractController
         //return $this->render('event/DetailA.html.twig', ['event' => $event]);
         return $this->redirectToRoute('app_ShoweventA', ['id' => $idevent]);
     }
-/*
-    #[Route('/deletecommentA/{id}/{eventid}', name: 'app_deletecommentA')]
-public function deleteCommentA(Request $request, int $id, int $eventid, CommentRepository $commentRepository): Response
-{
-    $entityManager = $this->getDoctrine()->getManager();
 
-    // Retrieve the event and comment entities
-    $event = $entityManager->getRepository(Event::class)->find($eventid);
-    $comment = $entityManager->getRepository(Comment::class)->find($id);
 
-    // Check if both event and comment exist
-    if (!$event || !$comment) {
-        // Handle not found scenario or redirect as needed
-        return $this->redirectToRoute('your_error_route');
+
+
+/******************************************************************************************************************************************* */
+/*********************************************************client********************************************************************************** */
+
+
+    #[Route('/Addcomment/{idevent}/{iduser}', name: 'app_Addcomment_event')]
+    public function AddCommentToEvent(int $idevent, int $iduser, Request $request, EventRepository $eventRepository, CommentRepository $commentRepository, UserRepository $userRepository)
+    {
+        $event = $eventRepository->find($idevent);
+        $user = $userRepository->find($iduser);
+
+        if (!$event || !$user) {
+            throw $this->createNotFoundException('Event or User not found');
+        }
+
+        if ($request->isMethod('POST')) {
+            // Handle form submission
+            $commentaire = $request->request->get('commentaire');
+
+            // Create a new comment
+            $comment = new Comment();
+            $comment->setEvent($event);
+            $comment->setCommentaire($commentaire);
+            $comment->setUser($user);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+            $em->flush();
+
+            // Return the updated event details with comments
+            return $this->render('Event/showdetail.html.twig', [
+                'event' => $event,
+                'user' => $user,
+            ]);
+        }
+
+    return $this->render('Event/addtest.html.twig', ['event' => $event]);
     }
 
-    // Check if the comment belongs to the event
-    if ($comment->getEvent() !== $event) {
-        // Handle invalid association or redirect as needed
-        return $this->redirectToRoute('your_error_route');
+    #[Route('/deletecomment/{ref}/{idevent}/{iduser}', name: 'app_deletecomment')]
+    public function deleteComment($ref, $idevent, $iduser, CommentRepository $commentRepository, UserRepository $userRepository, EventRepository $eventRepository)
+    {
+        $comment = $commentRepository->find($ref);
+        $user = $userRepository->find($iduser);
+        $event = $eventRepository->find($idevent);
+    
+        if (!$comment || !$user || !$event) {
+            throw $this->createNotFoundException('Comment, User, or Event not found');
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($comment);
+        $em->flush();
+    
+        return $this->redirectToRoute('app_eventDetails', ['id' => $idevent, 'userId' => $iduser]);
     }
-
-    // Remove the comment from the event and delete it
-    $em = $this->getDoctrine()->getManager();
-    $em->remove($comment);
-    $em->flush();
-
-    // Redirect to the event details page or any other page as needed
-    //return $this->redirectToRoute('event_detail', ['id' => $event->getId()]);
-    return $this->render('event/DetailA.html.twig', ['event' => $event]);
-}
-
-*/
+    
 
 
 
@@ -141,18 +150,6 @@ public function deleteCommentA(Request $request, int $id, int $eventid, CommentR
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-         
-    /*        $book1=$repository->findby(['title'=>$book->getTitle()]);
-            if($book1){return $this->render('book/Exist.html.twig'); }
-            //initialisation de l'attribut "published" a true
-            //  $book->setPublished(true);
-            // get the accociated author from the book entity
-            $author = $book->getAuthor();
-            
-            //incrementation de l'attribut "nb_books" de l'entire Author
-            //if ($author instanceof Author) {$author->setNbBooks($author->getNbBooks() + 1);}
-            $author->setNbBooks($author->getNbBooks() + 1);                                         */
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush();
@@ -164,38 +161,6 @@ public function deleteCommentA(Request $request, int $id, int $eventid, CommentR
     }
 
 
-
-/*
-    #[Route('/deletecomment/{ref}/{id}/{userId}', name: 'app_deletecomment')]
-    public function delete($ref,$id, $userId, CommentRepository $repository, EventRepository $eventRepository, UserRepository $userRepository)
-    {
-        $comment = $repository->find($ref);
-
-        $event = $eventRepository->find($id);
-        $user = $userRepository->find($userId);
-
-        if (!$event || !$user) {
-            throw $this->createNotFoundException('Event or User not found');
-        }
-
-
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($comment);
-        $em->flush();
-
-
-        //return $this->redirectToRoute('app_Affichecomment',);
-        return $this->render('event/showdetail.html.twig', [
-            'event' => $event,
-            'user' => $user,
-            // 'comments' => $comments,
-        ]);
-    }
-
-    */
-
-
-    
 
 
 }

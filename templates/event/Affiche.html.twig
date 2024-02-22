@@ -1,4 +1,4 @@
-{% extends 'baseA.html.twig' %}
+{% extends 'base_back.html.twig' %}
 
 {% block title %}Events{% endblock %}
 
@@ -26,7 +26,7 @@
                     <th>TYPE</th>
                     <th>DATE DEBUT</th>
                     <th>DATE FIN</th>
-                    <th>Nombre Places</th>
+                    <th>Places Reserved</th>
                     <th>Edit</th>
                 </tr>
             </thead>
@@ -38,7 +38,7 @@
                         <td>{{ a.type }}</td>
                         <td>{{ a.datedebut | date('M-d-Y') }}</td>
                         <td>{{ a.datefin | date('M-d-Y') }}</td>
-                        <td>{{ a.nbPlaces }}</td>
+                        <td><p> {{ a.nbPlacesR }} / {{ a.nbPlaces }} </p></td>
                         
                         <td>
                             <a href="{{ path('app_ShoweventA', {'id': a.id}) }}" class="btn btn-primary">Detail</a>

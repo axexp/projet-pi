@@ -24,7 +24,7 @@ class EventRepository extends ServiceEntityRepository
     public function findBySearchQuery(string $searchQuery): array
     {
         return $this->createQueryBuilder('e')
-            ->where('e.name LIKE :query')
+            ->where('e.type LIKE :query')
             ->setParameter('query', '%' . $searchQuery . '%')
             ->getQuery()
             ->getResult();

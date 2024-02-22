@@ -40,6 +40,43 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
         ]);
     }
+
+/***************************************************************************************************************************************** */
+/*************************************************USER-TEST********************************************************************************** */
+
+#[Route('/connect', name: 'app_connect')]
+public function connect(AuthenticationUtils $authenticationUtils, Request $request): Response
+{
+    
+    // Get the submitted name from the form
+    $name = $request->request->get('name');
+
+    // Check if the user with the provided username exists in the database
+    $userRepository = $this->getDoctrine()->getRepository(User::class);
+    $user = $userRepository->findOneBy(['name' => $name]);
+
+    if (!$user) {
+        // Handle the case when the user does not exist
+        return $this->render('user/login.html.twig', [
+            'error' => 'Invalid username',
+        ]);
+    }
+
+    return $this->render('event/Homefront.html.twig', ['user' => $user, ]);
+
+}
+
+#[Route('/home/{id}', name: 'app_home')]
+public function home($id, UserRepository $userRepository,Request $request): Response
+{
+
+    //$user = $userRepository->findAll();
+    $user = $userRepository->find($id);
+    
+    return $this->render('event/Homefront.html.twig', ['user' => $user,]);
+}
+
+
 /*
     #[Route('/connect', name: 'app_connect')]
     public function connect(): Response
@@ -48,7 +85,7 @@ class UserController extends AbstractController
         return $this->render('user/show.html.twig', ['user' => $user]);
     }
 */
-
+/*
     #[Route('/connect', name: 'app_connect')]
 public function connect(AuthenticationUtils $authenticationUtils, Request $request): Response
 {
@@ -75,14 +112,16 @@ public function connect(AuthenticationUtils $authenticationUtils, Request $reque
             'error' => 'Invalid username',
         ]);
     }
+
     return $this->render('event/Home.html.twig', [
-        'event' => $events,
+        //'event' => $events,
         'user' => $user,
-        'searchQuery' => $searchQuery
+        //'searchQuery' => $searchQuery
     ]);
 
 }
-
+*/
+/*
 #[Route('/home/{id}', name: 'app_home')]
 public function home($id, UserRepository $userRepository,Request $request): Response
 {
@@ -96,13 +135,15 @@ public function home($id, UserRepository $userRepository,Request $request): Resp
         $repository->findBySearchQuery($searchQuery) :
         $repository->findAll();
 
+    
     return $this->render('event/home.html.twig', [
-        'event' => $events,
+        //'event' => $events,
         'user' => $user,
-        'searchQuery' => $searchQuery,
+        //'searchQuery' => $searchQuery,
     ]);
 
 }
+*/
 
 
 

@@ -23,6 +23,7 @@ class EventType extends AbstractType
             ->add('name')
             ->add('type')
             ->add('description')
+            ->add('address')
             ->add('datedebut', DateType::class, [
                 'widget' => 'single_text', // Afficher en tant qu'entrée texte unique
                 'format' => 'yyyy-MM-dd', // Définir le format de date souhaité
