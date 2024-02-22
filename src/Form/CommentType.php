@@ -36,6 +36,7 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('commentaire')
+            /*
             ->add('event', EntityType::class, [
                 'class' => Event::class,
                 'choice_label' => 'id', // Display the id property of the Event entity
@@ -47,7 +48,10 @@ class CommentType extends AbstractType
                 'choice_label' => 'id', // Adjust the property based on your User entity
                 'placeholder' => 'Select a user', // Optional: Display a placeholder in the dropdown
                 'mapped' => true, // This line includes the 'user' field in the form
-            ]);
+            ])
+            */
+            ;
+            
     }
     
     public function configureOptions(OptionsResolver $resolver): void

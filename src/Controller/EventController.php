@@ -61,13 +61,14 @@ public function affiche(Request $request)
 }
 */
 
+
 #[Route('/affiche', name: 'app_Affiche')]
 public function affiche(Request $request, ManagerRegistry $doctrine): Response
 {
     $em = $doctrine->getManager();
 
     $currentPage = $request->query->getInt('page', 1);
-    $itemsPerPage = 2;
+    $itemsPerPage = 5;
     $offset = ($currentPage - 1) * $itemsPerPage;
 
     $searchQuery = $request->query->get('search', '');
@@ -84,7 +85,7 @@ public function affiche(Request $request, ManagerRegistry $doctrine): Response
 
     $totalPages = ceil($totalItems / $itemsPerPage);
 
-    return $this->render('event/affiche.html.twig', [
+    return $this->render('event/afficheback.html.twig', [
         'event' => $eventItems,
         'searchQuery' => $searchQuery,
         'currentPage' => $currentPage,
@@ -101,7 +102,7 @@ public function affiche(Request $request, ManagerRegistry $doctrine): Response
             return $this->redirectToRoute('app_Affiche');
         }
 
-        return $this->render('event/DetailA.html.twig', ['event' => $event]);
+        return $this->render('event/Detailback.html.twig', ['event' => $event]);
     }
 
 
@@ -110,6 +111,7 @@ public function affiche(Request $request, ManagerRegistry $doctrine): Response
     public function add(Request $request): Response
     {
         $event = new Event();
+        $event->setNbPlacesR(0);
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
@@ -130,7 +132,7 @@ public function affiche(Request $request, ManagerRegistry $doctrine): Response
             return $this->redirectToRoute('app_Affiche');
         }
 
-        return $this->render('event/Add.html.twig', [
+        return $this->render('event/Addback.html.twig', [
             'f' => $form->createView(),
         ]);
     }
@@ -164,49 +166,12 @@ public function edit(EventRepository $repository, $id, Request $request): Respon
         return $this->redirectToRoute('app_Affiche');
     }
 
-    return $this->render('event/edit.html.twig', [
+    return $this->render('event/editback.html.twig', [
         'event' => $event,
         'f' => $form->createView(),
     ]);
 }
-/*
-#[Route('/delete/{id}', name: 'app_deleteEvent')]
-public function delete($id, EventRepository $repository, EntityManagerInterface $entityManager)
-{
-    $event = $repository->find($id);
 
-    $comments = $event->getComments();
-
-        foreach ($comments as $comment) {
-              $entityManager->remove($comment);
-        }
-
-        $entityManager->remove($event);
-        $entityManager->flush();
- 
-
-    $participants = $event->getParticipants();
-
-        foreach ($participants as $participant) {
-            $entityManager->remove($participant);
-        }
-        
-        $entityManager->remove($event);
-        $entityManager->flush();
-
-
-    if (!$event) {
-        throw $this->createNotFoundException('Event non trouvé');
-    }
-
-       $em = $this->getDoctrine()->getManager();
-    $em->remove($event);
-    $em->flush();
-
-        
-    return $this->redirectToRoute('app_Affiche');
-}
-*/
 
 #[Route('/delete/{id}', name: 'app_deleteEvent')]
 public function delete($id, EventRepository $repository, EntityManagerInterface $entityManager)
@@ -305,47 +270,6 @@ public function eventDetails($id, $userId, EventRepository $eventRepository, Use
 
 
 /************************************************************************************************************************************************************** */
-/*
-#[Route('/Addcomment/{id}', name: 'app_Addcomment_event')]
-public function AddCommentToEvent(int $id, Request $request, EventRepository $eventRepository, CommentRepository $commentRepository)
-{
-    $event = $eventRepository->find($id);
-
-    if (!$event) {
-        throw $this->createNotFoundException('Event not found');
-    }
-
-    if ($request->isMethod('POST')) {
-        // Handle form submission
-        $commentaire = $request->request->get('commentaire');
-
-        // Create a new comment
-        $comment = new Comment();
-        $comment->setEvent($event);
-        $comment->setCommentaire($commentaire);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($comment);
-        $em->flush();
-
-        //return $this->redirectToRoute('app_eventDetails');
-        return $this->render('Event/showdetail.html.twig', ['event' => $event]);
-    }
-
-    return $this->render('Event/addtest.html.twig', ['event' => $event]);
-}
-
-*/
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -517,91 +441,6 @@ public function add(Request $request): Response
 */
 
 /************************************************************************************************************************************************************** */
-
-// ...    
-
-    
-
-
-
-/*
-    #[Route('/addcomment_direct/{id}', name: 'app_Addcomment_direct')]
-    public function addCommentDirect($id, CommentRepository $commentRepository): Response
-    {
-        $event = $this->getDoctrine()->getRepository(Event::class)->find($id);
-
-        if (!$event) {
-            throw $this->createNotFoundException('Event not found');
-        }
-
-        // Create a new comment
-        $comment = new Comment();
-        $comment->setEvent($event);
-        $comment->setCommentaire('Your comment here'); // You can set a default comment or leave it empty
-
-        // Persist the comment to the database
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($comment);
-        $em->flush();
-
-        // Redirect back to the event details page
-        return $this->redirectToRoute('app_eventDetails', ['id' => $id]);
-    }
-*/
-
-
-
-
-/*
-#[Route('/addParticipant/{id}', name: 'app_addParticipant')]
-    public function addParticipant(int $id, EventRepository $eventRepository): Response
-    {
-        $event = $eventRepository->find($id);
-
-        if (!$event) {
-            throw $this->createNotFoundException('Event not found');
-        }
-
-        // Assuming you have a ManyToMany relationship between Event and Participant
-        $participant = new Participant();
-        $participant->setEvent($event);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($participant);
-        $em->flush();
-
-        // You can redirect to the event details page or any other page
-        return $this->redirectToRoute('app_eventDetails', ['id' => $event->getId()]);
-    }
-*/
-/*
-    #[Route('/addParticipant/{id}/{userId}', name: 'app_addParticipant')]
-public function addParticipant(int $id, int $userId, EventRepository $eventRepository, UserRepository $userRepository): Response
-{
-    $event = $eventRepository->find($id);
-    $user = $userRepository->find($userId);
-
-    if (!$event || !$user) {
-        throw $this->createNotFoundException('Event or User not found');
-    }
-
-    // Assuming you have a OneToMany relationship between Event and Participant
-    $participant = new Participant();
-    $participant->setEvent($event);
-    $participant->setUser($user);
-
-    $em = $this->getDoctrine()->getManager();
-    $em->persist($participant);
-    $em->flush();
-
-    // Check if the event object is not null before accessing its id property
-    $eventId = $event->getId() ?? null;
-
-    // You can redirect to the event details page or any other page
-    return $this->redirectToRoute('app_eventDetails', ['id' => $event->getId()]);
-}
-*/
-
 
 
 

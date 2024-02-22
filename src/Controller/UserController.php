@@ -66,7 +66,8 @@ public function connect(AuthenticationUtils $authenticationUtils, Request $reque
 
 }
 
-#[Route('/home/{id}', name: 'app_home')]
+
+#[Route('/homefront/{id}', name: 'app_homefront')]
 public function home($id, UserRepository $userRepository,Request $request): Response
 {
 
@@ -77,78 +78,17 @@ public function home($id, UserRepository $userRepository,Request $request): Resp
 }
 
 
-/*
-    #[Route('/connect', name: 'app_connect')]
-    public function connect(): Response
-    {
-
-        return $this->render('user/show.html.twig', ['user' => $user]);
-    }
-*/
-/*
-    #[Route('/connect', name: 'app_connect')]
-public function connect(AuthenticationUtils $authenticationUtils, Request $request): Response
-{
-    
-    // Get the submitted name from the form
-    $name = $request->request->get('name');
-
-    // Check if the user with the provided username exists in the database
-    $userRepository = $this->getDoctrine()->getRepository(User::class);
-    $user = $userRepository->findOneBy(['name' => $name]);
-
-    // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-    $searchQuery = $request->query->get('search', '');
-
-    $repository = $this->getDoctrine()->getRepository(Event::class);
-    $events = $searchQuery !== '' ?
-        $repository->findBySearchQuery($searchQuery) :
-        $repository->findAll();
-     // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
-
-    if (!$user) {
-        // Handle the case when the user does not exist
-        return $this->render('user/login.html.twig', [
-            'error' => 'Invalid username',
-        ]);
-    }
-
-    return $this->render('event/Home.html.twig', [
-        //'event' => $events,
-        'user' => $user,
-        //'searchQuery' => $searchQuery
-    ]);
-
+#[Route('/homeback', name: 'app_homeback')]
+public function homeback(Request $request): Response
+{   
+    return $this->render('event/Homeback.html.twig');
 }
-*/
-/*
-#[Route('/home/{id}', name: 'app_home')]
-public function home($id, UserRepository $userRepository,Request $request): Response
-{
-   
-    //$user = $userRepository->findAll();
-    $user = $userRepository->find($id);
-    
-    $searchQuery = $request->query->get('search', '');
-    $repository = $this->getDoctrine()->getRepository(Event::class);
-    $events = $searchQuery !== '' ?
-        $repository->findBySearchQuery($searchQuery) :
-        $repository->findAll();
-
-    
-    return $this->render('event/home.html.twig', [
-        //'event' => $events,
-        'user' => $user,
-        //'searchQuery' => $searchQuery,
-    ]);
-
-}
-*/
 
 
 
-    /************************************************************************************************************************************************* */
-    /**************************************************************CRUD-USER*********************************************************************************** */
+
+/************************************************************************************************************************************************* */
+/**************************************************************CRUD-USER*********************************************************************************** */
 
 
     #[Route('/Afficheuser', name: 'app_Afficheuser')]

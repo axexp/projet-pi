@@ -133,6 +133,9 @@ class ParticipantController extends AbstractController
         // You can redirect to the event details page or any other page
         return $this->redirectToRoute('app_eventDetails', ['id' => $eventId, 'userId' => $userId]);
     }
+
+
+    
 /************************************************************************************************************************************************* */
 /**************************************************************CRUD-PARTICIPANT*********************************************************************************** */
 
@@ -174,58 +177,6 @@ class ParticipantController extends AbstractController
     }
 
     
-/*
-    
-    #[Route('/deleteparticipant/{ref}/{idevent}/{iduser}', name: 'app_deleteparticipant')]
-public function deleteParticipant($ref, $idevent, $iduser, ParticipantRepository $repository, UserRepository $userRepository, EventRepository $eventRepository): Response
-{
-    
-    
-    // Find the user by ID
-    $user = $userRepository->find($iduser);
-
-    // Find the event by ID
-    $event = $eventRepository->find($idevent);
-
-    // Check if the event exists
-    if (!$event) {
-        throw $this->createNotFoundException('Event not found');
-    }
-
-    // Check if the user exists
-    if (!$user) {
-        throw $this->createNotFoundException('User not found');
-    }
-
-    // Get all participants
-    $participants = $repository->findAll();
-
-    // Flag to check if at least one participant belongs to the specified user
-    $userFound = false;
-
-    // Iterate through participants
-    foreach ($participants as $participant) {
-        // Check if the participant's user reference matches
-        if ($participant->isUserRefEqual($ref)) {
-            // Perform the action for participants belonging to the specified user
-            $this->getParticipant($participant);
-            
-            // Set the flag to true since at least one participant belongs to the user
-            $userFound = true;
-            
-        }
-    }
-
-    if (userFound)
-    // Remove the participant and flush changes
-    $em = $this->getDoctrine()->getManager();
-    $em->remove($participant);
-    $em->flush();
-
-    return $this->redirectToRoute('app_eventDetails', ['id' => $idevent, 'userId' => $iduser]);
-}
-*/
-
 
     
 }

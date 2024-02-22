@@ -5,7 +5,7 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
 
-                    <a href="{{ path('app_home',  {'id':user.id}) }}" class="nav-item nav-link ">Home</a>
+                    <a href="{{ path('app_homefront',  {'id':user.id}) }}" class="nav-item nav-link ">Home</a>
                     <a href="about.html" class="nav-item nav-link">About</a>
                     <a href="service.html" class="nav-item nav-link">Services</a>
                     <a href="{{ path('app_showb',  {'id':user.id}) }}" class="nav-item nav-link active">Events</a>
@@ -24,7 +24,7 @@
                     </div>
                     <a href="contact.html" class="nav-item nav-link">Contact</a>
                 </div>
-                <a href="" class="btn btn-primary rounded-pill py-2 px-4">Register</a>
+                 <!--<a href="" class="btn btn-primary rounded-pill py-2 px-4">Register</a>-->
             </div>
 {% endblock %}
 
@@ -53,43 +53,21 @@
                                 {% if a.image %}
                                     <img src="{{ asset('uploads/images/' ~ a.image) }}" alt="{{ a.name }}" class="img-fluid">
                                 {% endif %}
-
                             </div>
 
                             <div class="d-flex border-bottom">
-                               
-                                <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>{{ a.datedebut | date('M-d-Y') }}</small>
-                                
+                                <small class="flex-fill text-center border-end py-2">
+                                    <i class="fa fa-calendar-alt text-primary me-2"></i>{{ a.datedebut | date('M-d-Y') }}</small>
                             </div>
-                            <div class="text-center p-4">
-                                
-                                <!--
-                                <div class="mb-3">
-                                    {% for _ in 1..5 %}
-                                        <small class="fa fa-star text-primary"></small>
-                                    {% endfor %}
-                                </div>
-                                 
-                                <p>{{ a.type }}</p>
-                                <p>{{ a.name }}</p>
-                                -->
 
-                                
+                            <div class="text-center p-4">
                                 <h6 class="card-title">{{ a.type }}</h6>
                                 <p>{{ a.name }}</p>
-
-
-                                <!--
-                                <p>{{ a.description }}</p>
                                 <div class="d-flex justify-content-center mb-2">
-                                    <a href="" class="btn btn-sm btn-primary px-3" style="border-radius: 30px;">Participer</a>
-                                </div>
-                                -->
-                                <div class="d-flex justify-content-center mb-2">
-                                    
                                     <a href="{{ path('app_eventDetails',  {'id': a.id,'userId': user.id}) }}" class="btn btn-sm btn-primary px-3" style="border-radius: 30px;">detail</a>
                                 </div>                                 
                             </div>
+
                         </div>
                     </div>
                 {% endfor %}
@@ -97,3 +75,7 @@
         </div>
     </div>
 {% endblock %}
+
+
+
+

@@ -118,6 +118,29 @@ class CommentController extends AbstractController
 
 
 
+#[Route('/editcomment/{id}', name: 'app_editcomment')]
+public function edit($id, CommentRepository $repository, Request $request)
+{
+    $comment = $repository->find($id);
+/*
+    if (!$comment) {
+        return $this->redirectToRoute('app_Affichecomment');
+    }
+*/
+    $form = $this->createForm(UserType::class, $comment);
+    $form->add('Modifier', SubmitType::class);
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $this->getDoctrine()->getManager()->flush();
+        return $this->redirectToRoute('app_Afficheuser');
+    }
+
+    return $this->render('user/Edit.html.twig', ['form' => $form->createView()]);
+}
+
+
     #[Route('/Affichecomment', name: 'app_Affichecomment')]
     public function Affiche (CommentRepository $repository)
         {

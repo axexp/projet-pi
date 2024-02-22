@@ -50,7 +50,8 @@ class Event
 
     #[ORM\Column]
     #[Assert\Positive(message: "The number of places must be a positive integer")]
-    #[Assert\NotNull(message: "The number of places cannot be null")]
+    //#[Assert\NotNull(message: "The number of places cannot be null")]
+    #[assert\NotBlank(message:"nombre places is required")]
     private ?int $nbPlaces = null;
 
     #[ORM\Column]
@@ -81,7 +82,7 @@ class Event
 
 
     #[ORM\Column(type:"string", nullable:true)]
-    //#[assert\NotBlank(message:"image is required")]
+    //#[assert\NotNull(message:"image is required")]
     private ?string $image;
 
 

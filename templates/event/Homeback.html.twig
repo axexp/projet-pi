@@ -1,0 +1,45 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Events{% endblock %}
+
+{% block navigate %}
+
+          <div class="menu-inner-shadow"></div>
+
+          <ul class="menu-inner py-1">
+            <!-- Dashboard -->
+            <li class="menu-item active ">
+              <a href="{{ path('app_homeback') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">Dashboard</div>
+              </a>
+            </li>
+
+            
+            <!-- Events -->
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Events</span></li>
+            <!-- List Events -->
+            <li class="menu-item ">
+                <a href="{{ path('app_Affiche') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-collection"></i>
+                  <div data-i18n="Basic">List Events</div>
+                </a>
+              </li>
+            
+            <!-- Add Events -->
+            <li class="menu-item ">
+                <a href="{{ path('app_Add') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-plus-circle"></i>
+                  <div data-i18n="Basic">Add Events</div>
+                </a>
+            </li>
+            
+          </ul>
+        </aside>
+
+        <!-- / Menu -->
+{% endblock %}
+
+{% block body %}
+{% endblock %}
+
