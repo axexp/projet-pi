@@ -81,6 +81,7 @@ public function home($id, UserRepository $userRepository,Request $request): Resp
 #[Route('/homeback', name: 'app_homeback')]
 public function homeback(Request $request): Response
 {   
+    
     return $this->render('event/Homeback.html.twig');
 }
 

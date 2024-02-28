@@ -47,19 +47,16 @@ class ParticipantController extends AbstractController
             throw $this->createNotFoundException('Participant or Event not found');
         }
 
-        // Decrement nbPlacesR by 1
         $event->setNbPlacesR($event->getNbPlacesR() - 1);
 
-        // Remove the participant from the database
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($participant);
-        $entityManager->persist($event); // Persist the updated event
+        $entityManager->persist($event);
         $entityManager->flush();
 
-        // Optionally add a flash message
         $this->addFlash('success', 'Participant has been deleted.');
 
-        // Redirect to the app_ShoweventA route after successful deletion
+        
         return $this->redirectToRoute('app_ShoweventA', ['id' => $idevent]);
     }
 
@@ -71,27 +68,25 @@ class ParticipantController extends AbstractController
     #[Route('/deleteparticipant/{ref}/{idevent}/{iduser}', name: 'app_deleteparticipant')]
     public function deleteParticipant($ref, $idevent, $iduser, ParticipantRepository $repository, UserRepository $userRepository, EventRepository $eventRepository): Response
     {
-        // Find the participant based on the provided parameters
+        
         $participant = $repository->findOneBy(['event' => $idevent, 'user' => $iduser]);
-
+/*
         if (!$participant) {
-            // Handle the case when the participant is not found, e.g., show an error message or redirect
-            // You may want to adjust this part based on your application's requirements
+
             return $this->redirectToRoute('app_eventDetails', ['id' => $idevent, 'userId' => $iduser]);
         }
-
+*/
         $event = $eventRepository->find($idevent);
-        // Decrement nbPlacesR by 1
+        
         $event->setNbPlacesR($event->getNbPlacesR() - 1);
 
 
-        // Remove the participant from the database
+       
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($participant);
-        $entityManager->persist($event); // Persist the updated event
+        $entityManager->persist($event); 
         $entityManager->flush();
 
-        // Redirect to the app_eventDetails route after successful deletion
         return $this->redirectToRoute('app_eventDetails', ['id' => $idevent, 'userId' => $iduser]);
     }
 
@@ -107,35 +102,35 @@ class ParticipantController extends AbstractController
             throw $this->createNotFoundException('Event or User not found');
         }
 
-        
 
-        // Assuming you have a OneToMany relationship between Event and Participant
         $participant = new Participant();
         $participant->setEvent($event);
         $participant->setUser($user);
 
-        //increlent the nblpace occupe in the event attribut
-        // nbPlacesR by 1
+
         $event->setNbPlacesR($event->getNbPlacesR() + 1);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($participant);
-        $em->persist($event); // Persist the updated event
+        $em->persist($event); 
         $em->flush();
 
-        // Check if the event object is not null before accessing its id property
+/*
          $eventId = $event ? $event->getId() : null;
 
         if ($eventId === null) {
         throw $this->createNotFoundException('Event ID is null');
         }
-
-        // You can redirect to the event details page or any other page
-        return $this->redirectToRoute('app_eventDetails', ['id' => $eventId, 'userId' => $userId]);
+*/
+        
+        return $this->redirectToRoute('app_eventDetails', ['id' => $id, 'userId' => $userId]);
     }
 
 
-    
+
+
+
+
 /************************************************************************************************************************************************* */
 /**************************************************************CRUD-PARTICIPANT*********************************************************************************** */
 

@@ -70,10 +70,10 @@ class CommentController extends AbstractController
         }
 
         if ($request->isMethod('POST')) {
-            // Handle form submission
+            
             $commentaire = $request->request->get('commentaire');
 
-            // Create a new comment
+            
             $comment = new Comment();
             $comment->setEvent($event);
             $comment->setCommentaire($commentaire);
@@ -83,14 +83,17 @@ class CommentController extends AbstractController
             $em->persist($comment);
             $em->flush();
 
-            // Return the updated event details with comments
+            
             return $this->render('Event/showdetail.html.twig', [
                 'event' => $event,
                 'user' => $user,
             ]);
         }
 
-    return $this->render('Event/addtest.html.twig', ['event' => $event]);
+        return $this->render('Event/showdetail.html.twig', [
+            'event' => $event,
+            'user' => $user,
+        ]);
     }
 
     #[Route('/deletecomment/{ref}/{idevent}/{iduser}', name: 'app_deletecomment')]

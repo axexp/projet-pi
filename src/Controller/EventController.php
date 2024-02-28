@@ -77,10 +77,10 @@ public function affiche(Request $request, ManagerRegistry $doctrine): Response
 
     if ($searchQuery !== '') {
         $eventItems = $eventRepository->findBySearchQuery($searchQuery, $itemsPerPage, $offset);
-        $totalItems = count($eventItems); // Count the search results
+        $totalItems = count($eventItems); 
     } else {
         $eventItems = $eventRepository->findBy([], null, $itemsPerPage, $offset);
-        $totalItems = $eventRepository->count([]); // Count all items
+        $totalItems = $eventRepository->count([]); 
     }
 
     $totalPages = ceil($totalItems / $itemsPerPage);
@@ -129,6 +129,7 @@ public function affiche(Request $request, ManagerRegistry $doctrine): Response
             $em->persist($event);
             $em->flush();
 
+            
             return $this->redirectToRoute('app_Affiche');
         }
 
@@ -209,7 +210,7 @@ public function delete($id, EventRepository $repository, EntityManagerInterface 
 public function showb($id, UserRepository $userRepository,Request $request)
 {
     $searchQuery = $request->query->get('search', '');
-    //$user = $userRepository->findAll();
+
     $user = $userRepository->find($id);
 
     $repository = $this->getDoctrine()->getRepository(Event::class);
@@ -223,6 +224,36 @@ public function showb($id, UserRepository $userRepository,Request $request)
         'searchQuery' => $searchQuery,
     ]);
 }
+
+
+#[Route('/eventDetails/{id}/{userId}', name: 'app_eventDetails')]
+public function eventDetails($id, $userId, EventRepository $eventRepository, UserRepository $userRepository)
+{
+    
+    $event = $eventRepository->find($id);
+    $user = $userRepository->find($userId);
+
+    if (!$event || !$user) {
+        throw $this->createNotFoundException('Event or User not found');
+    }
+
+    //$comments = $event->getComments();
+
+    return $this->render('event/showdetail.html.twig', [
+        'event' => $event,
+        'user' => $user,
+        // 'comments' => $comments,
+    ]);
+}
+
+
+/************************************************************************************************************************************************************** */
+
+
+
+
+
+
 
 /*
 #[Route('/show', name: 'app_show')]
@@ -245,31 +276,6 @@ public function show(Request $request)
 }
 */
 
-#[Route('/eventDetails/{id}/{userId}', name: 'app_eventDetails')]
-public function eventDetails($id, $userId, EventRepository $eventRepository, UserRepository $userRepository)
-{
-    // Assuming you want to fetch the event details from the database
-    $event = $eventRepository->find($id);
-    $user = $userRepository->find($userId);
-
-    if (!$event || !$user) {
-        throw $this->createNotFoundException('Event or User not found');
-    }
-
-    // Fetch the associated comments (assuming you have a relationship between Event and Comment)
-    $comments = $event->getComments();
-
-    return $this->render('event/showdetail.html.twig', [
-        'event' => $event,
-        'user' => $user,
-        // 'comments' => $comments,
-    ]);
-}
-
-
-
-
-/************************************************************************************************************************************************************** */
 
 
 
