@@ -50,11 +50,59 @@
                         <h3 class="card-title">{{ event.type }}</h3>
                         <h5 class="card-title">{{ event.name }}</h5>
                     </div>
-                    <span class="fw-bold">Address:</span> {{ event.address }}
-                    <p class="card-text">{{ event.description }}</p>
+                    <!--<span class="fw-bold">Address:</span> {{ event.address }}-->
+                    <p class="card-text"><span class="fw-bold">Description:</span>{{ event.description }}</p>
+                    <div>
+
+
+                        <div id="map" style="height: 250px;"></div>
+                        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+                        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+                        <script src="https://cdn.jsdelivr.net/npm/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
+                        <script>
+                            // Function to extract coordinates from Google Maps URL
+                            function extractCoordinatesFromGoogleMapsUrl(googleMapsUrl) {
+                                // Extracting coordinates from the URL
+                                var matches = googleMapsUrl.match(/@(-?\d+\.\d+),(-?\d+\.\d+),(\d+)z/);
+
+                                if (matches && matches.length === 4) {
+                                    var latitude = parseFloat(matches[1]);
+                                    var longitude = parseFloat(matches[2]);
+                                    return [latitude, longitude];
+                                } else {
+                                    console.error('Error parsing Google Maps URL');
+                                    return null;
+                                }
+                            }
 
 
 
+                            // Extracting coordinates from the Google Maps URL
+                            var eventAddress = '{{ event.address }}'; // Assuming '{{ event.address }}' is a placeholder for the actual address
+                            var coordinates = extractCoordinatesFromGoogleMapsUrl(eventAddress);
+
+                            if (coordinates) {
+                                // Log coordinates to the console for debugging
+                                console.log('Coordinates:', coordinates);
+
+                                // Set up the Leaflet map
+                                var map = L.map('map').setView(coordinates, 13);
+
+                                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                }).addTo(map);
+
+                                // Add a marker to the map
+                                L.marker(coordinates).addTo(map)
+                                    //.bindPopup('Event : ' + '{{ event.name }}')
+                                    .openPopup();
+                            } else {
+                                console.error('Error extracting coordinates from Google Maps URL');
+                            }
+                        </script>
+                    </div>
 
                     <div class="d-flex justify-content-center mt-3">
                         {% set isUserParticipant = false %}
@@ -86,9 +134,8 @@
                             style="border-radius: 30px;">Back to list</a>
                     </div>
 
-                    
-                    
-                    
+
+
 
 
 
