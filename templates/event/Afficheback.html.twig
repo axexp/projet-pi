@@ -38,6 +38,8 @@
         <!-- / Menu -->
 {% endblock %}
 
+
+
 {% block body %}
     <div class="container mt-5">
 
@@ -50,6 +52,8 @@
                     <button class="btn btn-outline-primary" type="submit">Search</button>
                 </form>
                     <a href="{{ path('app_Add') }}" class="btn btn-success">Add Event</a>
+                    <!-- Add the PDF button 
+                    <a href="{{ path('app_generate_pdf') }}" class="btn btn-secondary">Generate PDF</a>-->
             </div>
         </div>
         
@@ -87,15 +91,21 @@
             <div class="col">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
+                        {% if totalPages == 0 %}
+                            <P>    NOT EXIST </P>
+                        {% else %}
                         {% for page in 1..totalPages %}
                             <li class="page-item {% if page == currentPage %}active{% endif %}">
                                 <a class="page-link" href="{{ path('app_Affiche', {'page': page}) }}">{{ page }}</a>
                             </li>
                         {% endfor %}
+                        {% endif %}
                     </ul>
                 </nav>
             </div>
         </div>
     </div>
 {% endblock %}
+
+
 

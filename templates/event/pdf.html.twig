@@ -1,0 +1,35 @@
+{# templates/event/pdf.html.twig #}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Events PDF</title>
+</head>
+<body>
+    <h1>Events</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>TYPE</th>
+                <th>DATE DEBUT</th>
+                <th>DATE FIN</th>
+                <th>Places Reserved</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in event %}
+                <tr>
+                    <td>{{ a.id }}</td>
+                    <td>{{ a.name }}</td>
+                    <td>{{ a.type }}</td>
+                    <td>{{ a.datedebut | date('M-d-Y') }}</td>
+                    <td>{{ a.datefin | date('M-d-Y') }}</td>
+                    <td>{{ a.nbPlacesR }} / {{ a.nbPlaces }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

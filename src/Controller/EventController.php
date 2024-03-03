@@ -29,7 +29,8 @@ use App\Entity\Participant;
 
 use Doctrine\Persistence\ManagerRegistry;
 
-
+//use App\Controller\Pdf;
+use Knp\Snappy\Pdf;
 
 class EventController extends AbstractController
 {
@@ -43,6 +44,26 @@ class EventController extends AbstractController
     }
 
 /***************************************************************************responsable*************************************************************************** */
+#[Route('/generate-pdf', name: 'app_generate_pdf')]
+    public function generatePdf(Pdf $pdf): Response
+    {
+        // Fetch all events from your repository
+        $events = $this->getDoctrine()->getRepository(Event::class)->findBy([], ['datedebut' => 'ASC']);
+
+        // Render the events to HTML (assuming you have a 'pdf.html.twig' template)
+        $html = $this->renderView('event/pdf.html.twig', [
+            'event' => $events,
+        ]);
+
+        // Generate PDF
+        $filename = 'events_' . date('Ymd_His') . '.pdf';
+        $response = new Response($pdf->getOutputFromHtml($html), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $filename . '"',
+        ]);
+
+        return $response;
+    }
 /*       original
 #[Route('/affiche', name: 'app_Affiche')]
 public function affiche(Request $request)
@@ -60,7 +81,71 @@ public function affiche(Request $request)
     ]);
 }
 */
+/*
+#[Route('/affiche', name: 'app_Affiche')]
+public function affiche(Request $request, EventRepository $eventRepository): Response
+{
+    if ($request->isXmlHttpRequest()) {
+        $currentPage = $request->request->getInt('start', 1);
+        $itemsPerPage = $request->request->getInt('length', 5);
+        $offset = ($currentPage - 1) * $itemsPerPage;
+        $searchQuery = $request->request->get('search')['value'];
 
+        $events = $eventRepository->searchEvents($searchQuery, $itemsPerPage, $offset);
+        $totalItems = $eventRepository->countFilteredEvents($searchQuery);
+
+        $response = [
+            'data' => $events,
+            'recordsTotal' => $totalItems,
+            'recordsFiltered' => $totalItems,
+            'draw' => $request->request->getInt('draw', 1),
+        ];
+
+        return $this->json($response);
+    }
+
+    $currentPage = $request->query->getInt('page', 1);
+    $itemsPerPage = 5;
+    $offset = ($currentPage - 1) * $itemsPerPage;
+
+    $searchQuery = $request->query->get('search');
+    $events = $eventRepository->searchEvents($searchQuery, $itemsPerPage, $offset);
+    $totalItems = $eventRepository->countFilteredEvents($searchQuery);
+    $totalPages = ceil($totalItems / $itemsPerPage);
+
+    return $this->render('event/afficheback.html.twig', [
+        'event' => $events,
+        'currentPage' => $currentPage,
+        'totalPages' => $totalPages,
+        'searchQuery' => $searchQuery,
+    ]);
+}
+
+
+#[Route('/affiche', name: 'app_Affiche')]
+    public function affiche(Request $request, EventRepository $eventRepository): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $currentPage = $request->query->getInt('page', 1);
+        $itemsPerPage = 5;
+        $offset = ($currentPage - 1) * $itemsPerPage;
+
+        // Utilisez la méthode findBy pour obtenir les événements paginés
+        $events = $eventRepository->findBy([], ['datedebut' => 'ASC'], $itemsPerPage, $offset);
+
+        // Utilisez la méthode count pour obtenir le nombre total d'événements
+        $totalItems = $eventRepository->count([]);
+
+        $totalPages = ceil($totalItems / $itemsPerPage);
+
+        return $this->render('event/afficheback.html.twig', [
+            'event' => $events,
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages,
+        ]);
+    }
+*/
 
 #[Route('/affiche', name: 'app_Affiche')]
 public function affiche(Request $request, ManagerRegistry $doctrine): Response
@@ -83,7 +168,11 @@ public function affiche(Request $request, ManagerRegistry $doctrine): Response
         $totalItems = $eventRepository->count([]); 
     }
 
-    $totalPages = ceil($totalItems / $itemsPerPage);
+    //if ($totalItems == 0) {
+    //$totalPages = 1 ;
+    //} else { 
+        $totalPages = ceil($totalItems / $itemsPerPage);
+    //}
 
     return $this->render('event/afficheback.html.twig', [
         'event' => $eventItems,

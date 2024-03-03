@@ -1,0 +1,62 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Events{% endblock %}
+
+{% block navigate %}
+
+          <div class="menu-inner-shadow"></div>
+
+          <ul class="menu-inner py-1">
+            <!-- Dashboard -->
+            <li class="menu-item ">
+              <a href="{{ path('app_homeback') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">Dashboard</div>
+              </a>
+            </li>
+
+            <!-- Events -->
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Events</span></li>
+            <!-- List Events -->
+            <li class="menu-item active">
+              <a href="{{ path('app_Affiche') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">List Events</div>
+              </a>
+            </li>
+            <!-- Add Events -->
+            <li class="menu-item ">
+                <a href="{{ path('app_Add') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-plus-circle"></i>
+                  <div data-i18n="Basic">Add Events</div>
+                </a>
+            </li>
+            
+          </ul>
+        </aside>
+
+        <!-- / Menu -->
+{% endblock %}
+
+
+
+{% block body %}
+<div class="col-md-4">
+    <div class="card-body">
+        <!-- Add the following code to display the total number of participants for a specific date -->
+        <h5 class="card-header m-0 me-2 pb-3">Total Participants</h5>
+        <div class="text-center">
+            <h3>{{ totalParticipants }}</h3>
+            <p>Participants on {{ date | date('M-d-Y') }}</p>
+        </div>
+        <!-- End of total participants code -->
+
+        <div class="text-center">
+            <div class="dropdown">
+                <!-- ... your existing dropdown code ... -->
+            </div>
+        </div>
+    </div>
+    <!-- ... other content ... -->
+</div>
+{% endblock %}

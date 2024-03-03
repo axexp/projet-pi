@@ -77,14 +77,34 @@ public function home($id, UserRepository $userRepository,Request $request): Resp
     return $this->render('event/Homefront.html.twig', ['user' => $user,]);
 }
 
-
+/*
 #[Route('/homeback', name: 'app_homeback')]
 public function homeback(Request $request): Response
 {   
     
     return $this->render('event/Homeback.html.twig');
-}
+}*/
 
+
+#[Route('/homeback', name: 'app_homeback')]
+public function homeback(Request $request, EventRepository $eventRepository, UserRepository $userRepository): Response
+{   
+    
+    $nbparticipants = $eventRepository->countAllParticipants();
+    $nbevents = $eventRepository->countAllEvents();
+    $nbcomments = $eventRepository->countAllComments();
+    $nbusers = $userRepository->countAllUsers();
+    $events = $eventRepository->findAll();
+
+
+    return $this->render('event/Homeback.html.twig', [
+        'nbparticipants' => $nbparticipants,
+        'nbevents' => $nbevents,
+        'nbcomments' => $nbcomments,
+        'nbusers' => $nbusers,
+        'events' => $events,
+    ]);
+}
 
 
 
