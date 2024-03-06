@@ -24,6 +24,7 @@ use App\Form\EventType;
 use App\Entity\Event;
 use App\Repository\EventRepository;
 
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 use Symfony\Component\Security\Core\Security;
@@ -45,7 +46,7 @@ class UserController extends AbstractController
 /*************************************************USER-TEST********************************************************************************** */
 
 #[Route('/connect', name: 'app_connect')]
-public function connect(AuthenticationUtils $authenticationUtils, Request $request): Response
+public function connect(AuthenticationUtils $authenticationUtils, Request $request,SessionInterface $s): Response
 {
     
     // Get the submitted name from the form
@@ -54,7 +55,7 @@ public function connect(AuthenticationUtils $authenticationUtils, Request $reque
     // Check if the user with the provided username exists in the database
     $userRepository = $this->getDoctrine()->getRepository(User::class);
     $user = $userRepository->findOneBy(['name' => $name]);
-
+        $s->set('name',$name);
     if (!$user) {
         // Handle the case when the user does not exist
         return $this->render('user/login.html.twig', [
@@ -62,7 +63,7 @@ public function connect(AuthenticationUtils $authenticationUtils, Request $reque
         ]);
     }
 
-    return $this->render('event/Homefront.html.twig', ['user' => $user, ]);
+    return $this->render('home/Homefront.html.twig', ['user' => $user, ]);
 
 }
 
@@ -74,7 +75,7 @@ public function home($id, UserRepository $userRepository,Request $request): Resp
     //$user = $userRepository->findAll();
     $user = $userRepository->find($id);
     
-    return $this->render('event/Homefront.html.twig', ['user' => $user,]);
+    return $this->render('home/Homefront.html.twig', ['user' => $user,]);
 }
 
 /*
@@ -97,7 +98,7 @@ public function homeback(Request $request, EventRepository $eventRepository, Use
     $events = $eventRepository->findAll();
 
 
-    return $this->render('event/Homeback.html.twig', [
+    return $this->render('home/Homeback.html.twig', [
         'nbparticipants' => $nbparticipants,
         'nbevents' => $nbevents,
         'nbcomments' => $nbcomments,

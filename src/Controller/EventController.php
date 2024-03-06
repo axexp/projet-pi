@@ -187,11 +187,15 @@ public function affiche(Request $request, ManagerRegistry $doctrine): Response
     public function showeventA($id, EventRepository $repository)
     {
         $event = $repository->find($id);
+        
         if (!$event) {
             return $this->redirectToRoute('app_Affiche');
         }
 
-        return $this->render('event/Detailback.html.twig', ['event' => $event]);
+        return $this->render('event/Detailback.html.twig', [
+            'event' => $event,
+           
+        ]);
     }
 
 
@@ -296,13 +300,13 @@ public function delete($id, EventRepository $repository, EntityManagerInterface 
 
 
 #[Route('/showb/{id}', name: 'app_showb')]
-public function showb($id, UserRepository $userRepository,Request $request)
+public function showb($id, UserRepository $userRepository,Request $request,EventRepository $repository)
 {
     $searchQuery = $request->query->get('search', '');
 
     $user = $userRepository->find($id);
 
-    $repository = $this->getDoctrine()->getRepository(Event::class);
+    //$repository = $this->getDoctrine()->getRepository(Event::class);
     $events = $searchQuery !== '' ?
         $repository->findBySearchQuery($searchQuery) :
         $repository->findAll();
@@ -321,6 +325,7 @@ public function eventDetails($id, $userId, EventRepository $eventRepository, Use
     
     $event = $eventRepository->find($id);
     $user = $userRepository->find($userId);
+    //$dateExpired = date('Y-m-d H:i:s');
 
     if (!$event || !$user) {
         throw $this->createNotFoundException('Event or User not found');
@@ -332,6 +337,7 @@ public function eventDetails($id, $userId, EventRepository $eventRepository, Use
         'event' => $event,
         'user' => $user,
         // 'comments' => $comments,
+        //'dateExpired' => $dateExpired,
     ]);
 }
 

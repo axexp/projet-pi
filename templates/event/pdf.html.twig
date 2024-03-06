@@ -1,9 +1,37 @@
-{# templates/event/pdf.html.twig #}
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>Events PDF</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        img {
+            max-width: 100px; /* Adjust the maximum width of the image */
+            height: auto;
+        }
+    </style>
 </head>
 <body>
     <h1>Events</h1>
@@ -11,6 +39,7 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>IMAGE</th>
                 <th>NAME</th>
                 <th>TYPE</th>
                 <th>DATE DEBUT</th>
@@ -22,6 +51,11 @@
             {% for a in event %}
                 <tr>
                     <td>{{ a.id }}</td>
+                    {% if a.image is defined %}
+                        <!--<td><img src="{{ asset('uploads/images/' ~ a.image) }}" alt="{{ a.name }}" class="img-fluid"></td>-->
+                    {% else %}
+                        <td>No Image</td>
+                    {% endif %}
                     <td>{{ a.name }}</td>
                     <td>{{ a.type }}</td>
                     <td>{{ a.datedebut | date('M-d-Y') }}</td>

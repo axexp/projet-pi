@@ -1,0 +1,89 @@
+{% extends 'base_front.html.twig' %}
+{% block title %} Votre Commande{% endblock %}
+
+{% block navigate %}
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+                    <a href="{{ path('app_homefront',  {'id':user.id}) }}" class="nav-item nav-link ">Home</a>
+                    <a href="" class="nav-item nav-link">About</a>
+                    <a href="" class="nav-item nav-link">Services</a>
+                    <a href="{{ path('app_product')}}" class="nav-item nav-link">Products</a>
+                    <a href="{{ path('app_showb',  {'id':user.id}) }}" class="nav-item nav-link ">Events</a>
+                    
+
+
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                        <div class="dropdown-menu m-0">
+                            <a href="{{ path('commande_show_progress')}}" class="dropdown-item">Mes Commande</a>
+                            <a href="" class="dropdown-item">404 Page</a>
+                            <a href="" class="dropdown-item">404 Page</a>
+                            <a href="" class="dropdown-item">404 Page</a>
+                            <a href="" class="dropdown-item">404 Page</a>
+                        </div>
+                    </div>
+                    <a href="{{ path('app_panier')}}" class="nav-item nav-link active">panier</a>
+                </div>
+                <!--<a href="" class="btn btn-primary rounded-pill py-2 px-4">Register</a>-->
+            </div>
+{% endblock %}
+{% block body %}
+<div class="card">
+  <div class="row">
+      <div class="col-md-8 cart">
+          <div class="title">
+              <div class="row">
+                  <div class="col"><h4><b>Shopping Cart</b></h4></div>
+                  <div class="col align-self-center text-right text-muted">{{panier|length}} items</div>
+              </div>
+          </div>    
+       {#   one item of comamnde #}
+          {% for product in panier %}
+               
+               
+             <div class="row border-top border-bottom">
+              <div class="row main align-items-center">
+                  <div class="col-2"><img class="img-fluid" src="https://i.imgur.com/pHQ3xT3.jpg"></div>
+                  <div class="col">
+                      <div class="row text-muted">{{ product.idproduct.getTitle() }}</div>
+                      <div class="row">{{ product.idproduct.price }}</div>
+                  </div>
+                  <div class="col">
+                      <a href="#">-</a><a href="#" class="border">{{ product.getQt() }}</a><a href="#">+</a>
+                  </div>
+                  <div class="col">&tnd;{{ product.getTotal()}} <span class="close">&#10005;</span></div>
+              </div>
+          </div>
+           {% endfor %} 
+                  {# <a href="{{ path('app_panier', {'id': product.id}) }}" class="btn btn-primary"><i class="bi bi-cart-plus"></i> Ajouter</a> #}
+
+          <div class="back-to-shop"> <a href="{{ path('app_panier')}}"><span class="text-muted">  BACK TO CART</span></a></div>
+      </div>
+      <div class="col-md-4 summary">
+          <div><h5><b>Summary</b></h5></div>
+          <hr>
+          <div class="row">
+              <div class="col" style="padding-left:0;">{{panier|length}}</div>
+              <div class="col text-right">&euro; 132.00</div>
+          </div>
+          <form>
+              <p>SHIPPING</p>
+              <select><option class="text-muted">Standard-Delivery- &euro;5.00</option></select>
+              <p>ENTER YOUR ADRESS</p>
+              <input id="code" placeholder="Enter your Adress">
+          </form>
+          <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+              <div class="col">TOTAL PRICE</div>
+              <div class="col text-right"> {{objpanier.total}}</div>
+          </div>
+                    {# <div class="back-to-shop"> <a href="{{ path('app_panier')}}"><span class="text-muted">  BACK TO CART</span></a></div> #}
+                    {# <a href="{{path('app_add',{'id': product.idproduct.getId()})}}" class="btn btn-primary">Ajouter</a> #}
+
+     <a href="{{ path('commande_change_status',{'idp':objpanier.id})}}"a>
+   <button  class="btn">CHECKOUT</button>
+    </a>
+      </div>
+  </div>
+  
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %}Votre panier{% endblock %}
+
+{% block navigate %}
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+                    <a href="{{ path('app_homefront',  {'id':user.id}) }}" class="nav-item nav-link">Home</a>
+                    <a href="" class="nav-item nav-link">About</a>
+                    <a href="" class="nav-item nav-link">Services</a>
+                    <a href="{{ path('app_product')}}" class="nav-item nav-link">Products</a>
+                    <a href="{{ path('app_showb',  {'id':user.id}) }}" class="nav-item nav-link ">Events</a>
+                    
+
+
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                        <div class="dropdown-menu m-0">
+                            <a href="{{ path('commande_show_progress')}}" class="dropdown-item">Mes Commande</a>
+                            <a href="" class="dropdown-item">404 Page</a>
+                            <a href="" class="dropdown-item">404 Page</a>
+                            <a href="" class="dropdown-item">404 Page</a>
+                            <a href="" class="dropdown-item">404 Page</a>
+                        </div>
+                    </div>
+                    <a href="{{ path('app_panier')}}" class="nav-item nav-link active">panier</a>
+                </div>
+                <!--<a href="" class="btn btn-primary rounded-pill py-2 px-4">Register</a>-->
+            </div>
+{% endblock %}
+{% block body %}
+    <section class="bg-light p-3">
+        <h1>Votre panier</h1>
+    </section>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Prix</th>
+                <th>Quantité</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {# {% set tot = 0 %} #}
+            {% for product in panier %}
+            <tr>
+                <td>{{ product.idproduct.getTitle() }}</td> {# Assuming 'getTitle()' returns the title of the product #}
+                <td>{{ product.idproduct.price }}</td> {# Assuming 'getPrice()' returns the price of the product #}
+               
+               
+               
+
+                <td>{{ product.getQt() }}</td> {# Assuming quantity is 1 for now, adjust as needed #}
+               
+               
+               
+               
+               
+                <td>{{ product.getTotal()}}</td> {# Assuming 'getPrice()' returns the price of the product #}
+                <td>
+                    <a href="{{path('app_add',{'id': product.idproduct.getId()})}}" class="btn btn-primary">Ajouter</a>
+                    <a href="{{path('app_remove',{'id': product.idproduct.getId()})}}" class="btn btn-danger">Supprimer</a>
+                    <a href="{{path('app_down',{'id': product.idproduct.getId()})}}" class="btn btn-primary">Diminuer</a>
+                </td>
+            </tr>
+            {# {% set tot = tot + product.getPrice() * product.getQt() %} #}
+
+             {% endfor %} 
+        </tbody>
+
+    </table>
+                         <h1>Totale:{{ objpanier.total }}</h1> 
+                    <a href="{{path('remove_all')}}" class="btn btn-primary">Vider le Panier</a>
+{# {% if tot != 0 %} #}
+                     <a href="{{path('app_commande_add',{'idp':objpanier.id})}}' class="btn btn-primary">Passer A La  commander</a>
+{# {% endif %} #}
+
+
+{% endblock %}

@@ -5,10 +5,10 @@
 {% block navigate %}
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
-
                     <a href="{{ path('app_homefront',  {'id':user.id}) }}" class="nav-item nav-link active">Home</a>
-                    <a href="{{ path('app_homefront',  {'id':user.id}) }}" class="nav-item nav-link">About</a>
-                    <a href="{{ path('app_homefront',  {'id':user.id}) }}" class="nav-item nav-link">Services</a>
+                    <a href="" class="nav-item nav-link">About</a>
+                    <a href="" class="nav-item nav-link">Services</a>
+                    <a href="{{ path('app_product')}}" class="nav-item nav-link">Products</a>
                     <a href="{{ path('app_showb',  {'id':user.id}) }}" class="nav-item nav-link ">Events</a>
                     
 
@@ -16,14 +16,14 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                         <div class="dropdown-menu m-0">
-                            <a href="" class="dropdown-item">Destination</a>
-                            <a href="" class="dropdown-item">Booking</a>
-                            <a href="" class="dropdown-item">Travel Guides</a>
-                            <a href="" class="dropdown-item">Testimonial</a>
+                            <a href="{{ path('commande_show_progress')}}" class="dropdown-item">Mes Commande</a>
+                            <a href="" class="dropdown-item">404 Page</a>
+                            <a href="" class="dropdown-item">404 Page</a>
+                            <a href="" class="dropdown-item">404 Page</a>
                             <a href="" class="dropdown-item">404 Page</a>
                         </div>
                     </div>
-                    <a href="{{ path('app_homefront',  {'id':user.id}) }}" class="nav-item nav-link">Contact</a>
+                    <a href="{{ path('app_panier')}}" class="nav-item nav-link">panier</a>
                 </div>
                 <!--<a href="" class="btn btn-primary rounded-pill py-2 px-4">Register</a>-->
             </div>

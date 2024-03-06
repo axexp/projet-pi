@@ -1,0 +1,96 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Votre panier{% endblock %}
+
+{% block navigate %}
+
+          <div class="menu-inner-shadow"></div>
+
+          <ul class="menu-inner py-1">
+            <!-- Dashboard -->
+            <li class="menu-item ">
+              <a href="{{ path('app_homeback') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">Dashboard</div>
+              </a>
+            </li>
+
+            
+            <!-- Events -->
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Events</span></li>
+            <!-- List Events -->
+            <li class="menu-item ">
+                <a href="{{ path('app_Affiche') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-collection"></i>
+                  <div data-i18n="Basic">List Events</div>
+                </a>
+              </li>
+            
+            <!-- Add Events -->
+            <li class="menu-item ">
+                <a href="{{ path('app_Add') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-plus-circle"></i>
+                  <div data-i18n="Basic">Add Events</div>
+                </a>
+            </li>
+
+            <li class="menu-item active">
+              <a href="{{ path('show_command_for_admin') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-plus-circle"></i>
+                <div data-i18n="Basic">Commande</div>
+              </a>
+            </li>
+            
+          </ul>
+        </aside>
+
+        <!-- / Menu -->
+{% endblock %}
+{% block body %}
+    <section class="bg-light p-3">
+        <h1>Liste Des Commandes</h1>
+    </section>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Command ID</th>
+                <th>Panier ID</th>
+                <th>STATUS</th>
+                <th>TOTAL</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in com %}
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.idpanier.id }}</td>
+                    <td>
+                        
+
+                        <form method="post"
+                        action="{{ path('edit_command_for_admin', {'id': product.id}) }}" class="mt-4">
+                        <div class="mb-3">
+                          <label for="etat" class="form-label">Status:</label>
+                          <select id="etat" name="etat" class="form-select" required>
+                              <option value="In PROGRESS" {% if product.etat == 'In PROGRESS' %}selected{% endif %}>In PROGRESS</option>
+                              <option value="shipped" {% if product.etat == 'shipped' %}selected{% endif %}>shipped</option>
+                              <option value="road" {% if product.etat == 'road' %}selected{% endif %}>road</option>
+                              <option value="done" {% if product.etat == 'done' %}selected{% endif %}>done</option>
+                          </select>
+                        </div>
+                       
+
+                    </td>
+                    <td>{{ product.total }}</td>
+                    <td>
+                      <button type="submit" class="btn btn-primary">M.A.J</button>
+                    </form>
+<!-- Add action buttons here -->
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

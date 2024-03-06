@@ -17,7 +17,7 @@ use App\Form\CommentType;
 
 use App\Repository\UserRepository;
 use App\Entity\User;
-
+use App\Form\UserType;
 
 class CommentController extends AbstractController
 {
